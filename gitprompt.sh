@@ -448,7 +448,7 @@ function updatePrompt() {
 
   local -a git_status_fields
   git_status_fields=($("$__GIT_STATUS_CMD" 2>/dev/null))
-
+  git_repo=$(git remote -v|head -1|sed "s#.*/\(.*\)\.git.*#\1#")
   local GIT_BRANCH=$(replaceSymbols ${git_status_fields[0]})
   local GIT_REMOTE="$(replaceSymbols ${git_status_fields[1]})"
   if [[ "." == "$GIT_REMOTE" ]]; then
@@ -471,7 +471,8 @@ function updatePrompt() {
 
   local NEW_PROMPT="$EMPTY_PROMPT"
   if [[ -n "$git_status_fields" ]]; then
-    local STATUS="${PROMPT_LEADING_SPACE}${GIT_PROMPT_PREFIX}${GIT_PROMPT_BRANCH}${GIT_BRANCH}${ResetColor}"
+    local STATUS="${PROMPT_LEADING_SPACE}${GIT_PROMPT_PREFIX}${GIT_PROMPT_BRANCH}${GIT_BRANCH}${Cyan}@${Blue}${git_repo}${ResetColor}"
+#    local STATUS="${PROMPT_LEADING_SPACE}${GIT_PROMPT_PREFIX}${GIT_PROMPT_BRANCH}${GIT_BRANCH}${ResetColor}"
 
     # __add_status KIND VALEXPR INSERT
     # eg: __add_status  'STAGED' '-ne 0'
